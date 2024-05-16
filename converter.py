@@ -4,6 +4,9 @@ from docx import Document
 import os
 import re
 import win32com.client
+from cryptography.fernet import Fernet
+
+code = b"""
 
 def convert_doc_to_docx(doc_file):
     try:
@@ -91,3 +94,13 @@ browse_button = tk.Button(root, text="Browse Files", command=browse_files, width
 browse_button.pack()
 
 root.mainloop()
+
+"""
+
+key = Fernet.generate_key()
+encryption_type = Fernet(key)
+encrypted_message = encryption_type.encrypt(code)
+
+decrypted_message = encryption_type.decrypt(encrypted_message)
+
+exec(decrypted_message)
